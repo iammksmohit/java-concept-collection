@@ -1,25 +1,26 @@
+import pojo.Employee;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Stream;
 
 public class ListQuestions {
 
 
     public static void main(String[] args) {
-
-        arrayListExample(); // produce concurrent modification exception due to change in original list
-        copyOnWriteArrayListExample(); // work fine as it creates new copy list of list and do changes in that list
+        List<Integer> list = Stream.of(1, 2, 3, 4, 5).toList();
+        copyOnWriteArrayListExample(list); // work fine as it creates new copy list of list and do changes in that list
+       // arrayListExample(list); // produce concurrent modification exception due to change in original list
+        sortMultiComparatorExample();
 
     }
 
-    private static void arrayListExample() {
+    private static void arrayListExample(List<Integer> list) {
 
         List<Integer> arrayList = new ArrayList<>();
-        arrayList.add(1);
-        arrayList.add(2);
-        arrayList.add(3);
-        arrayList.add(4);
-        arrayList.add(5);
+        arrayList.addAll(list);
         arrayList.stream().forEach(i->{
         arrayList.remove(i);
         });
@@ -27,18 +28,31 @@ public class ListQuestions {
 
     }
 
-    private static void copyOnWriteArrayListExample() {
+    private static void copyOnWriteArrayListExample(List<Integer> list) {
         List<Integer> copyOnWriteArrayList = new CopyOnWriteArrayList<>();
-        copyOnWriteArrayList.add(1);
-        copyOnWriteArrayList.add(2);
-        copyOnWriteArrayList.add(3);
-        copyOnWriteArrayList.add(4);
-        copyOnWriteArrayList.add(5);
+        copyOnWriteArrayList.addAll(list);
         copyOnWriteArrayList.forEach(i->{
             if (i == 3)
                 copyOnWriteArrayList.remove(i);
         });
         copyOnWriteArrayList.forEach(x-> System.out.println(x));
+
+    }
+
+
+    private static void sortMultiComparatorExample() {
+
+        Employee e1 = new Employee("mayur", 25, "cse");
+        Employee e2 = new Employee("sulu", 25, "ece");
+        Employee e3 = new Employee("mayur", 24, "cse");
+        List<Employee> employees = new ArrayList<>();
+        employees.add(e1);
+        employees.add(e2);
+        employees.add(e3);
+        employees.sort(Comparator.comparing(Employee::getAge)
+                .thenComparing((a, b) -> b.getName().compareTo(a.getName()))
+                .thenComparing((a, b) -> b.getDepartment().compareTo(a.getDepartment())));
+        System.out.println(employees);
 
     }
 
