@@ -43,7 +43,7 @@ public class ListQuestions {
     private static void sortMultiComparatorExample() {
 
         Employee e1 = new Employee("mayur", 25, "cse");
-        Employee e2 = new Employee("sulu", 25, "ece");
+        Employee e2 = new Employee("mayur", 25, "ece");
         Employee e3 = new Employee("mayur", 24, "cse");
         List<Employee> employees = new ArrayList<>();
         employees.add(e1);
